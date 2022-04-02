@@ -5,7 +5,7 @@ interface GameProps {}
 
 const Game: React.FC<GameProps> = ({}) => {
 
-    const draw = (ctx: CanvasRenderingContext2D) => {};
+    const draw = (context: CanvasRenderingContext2D) => {};
 
     return <Canvas draw={draw} />;
 }
