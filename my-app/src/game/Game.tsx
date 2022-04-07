@@ -17,7 +17,7 @@ const Game: React.FC<GameProps> = ({}) => {
     };
 
     return (
-    <GameWrapper onkeyDown= {onkeyDownHandler}>
+    <GameWrapper onKeyDown= {onkeyDownHandler}>
         <Canvas ref={canvasRef} draw={drawGame} />
     </GameWrapper>
     );
