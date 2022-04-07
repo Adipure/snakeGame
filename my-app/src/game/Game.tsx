@@ -10,14 +10,14 @@ const Game: React.FC<GameProps> = ({}) => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const { snakeBody } = useGameLogic();
+    const { snakeBody, onkeyDownHandler } = useGameLogic();
 
     const drawGame = (context: CanvasRenderingContext2D) => {
         draw({context, snakeBody})
     };
 
     return (
-    <GameWrapper>
+    <GameWrapper onkeyDown= {onkeyDownHandler}>
         <Canvas ref={canvasRef} draw={drawGame} />
     </GameWrapper>
     );
