@@ -25,13 +25,14 @@ const Canvas = forwardRef<HTMLCanvasElement, CanvasProps>(
             }
 
             draw(context);
+            return () => context.clearRect(0, 0, window.innerWidth, 400)
         }, [draw, canvasRef])    
 
         if (!canvasRef){
             return null;
         }
 
-    return (<S.Canvas width={400} height= {200} ref={canvasRef as any} {...props} />);
+    return (<S.Canvas width={300} height= {150} ref={canvasRef as any} {...props} />);
 }
 ); 
 export default Canvas;
