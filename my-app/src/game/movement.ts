@@ -1,3 +1,4 @@
+import { SEGMENT_SIZE } from "../draw/draw";
 import { Direction, Position } from "./useGameLogic";
 
 const createSnakeMovement = (gridSize = 5) => ({
@@ -50,5 +51,13 @@ export const willSnakeHitTheFood = ({
             return (foodPosition.y === snakeHeadPosition.y && snakeHeadPosition.x + 5 === foodPosition.x)    
     }
 }
+export const hasSnakeEatenItself = (snakeBody: Position[])=> {
+    if(snakeBody.length <=1 ) {
+        return false;
+    }
+    const head = snakeBody[snakeBody.length - 1];
+    const body = snakeBody.slice(0, snakeBody.length -1);
 
+    return body.some(segment => segment.x === head.x && segment.y === head.y );
+}
 export default createSnakeMovement;

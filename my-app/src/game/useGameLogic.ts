@@ -1,10 +1,9 @@
-import { dir } from "console";
-import { Dir } from "fs";
 import React, { useEffect, useState } from "react"
 import { SEGMENT_SIZE } from "../draw/draw";
 import randomPositionOnGrid from "../utils/randomPositionOnGrid";
 import useInterval from "../utils/useInterval";
-import createSnakeMovement, { willSnakeHitTheFood } from "./movement";
+import { GameState } from "./Game";
+import createSnakeMovement, { willSnakeHitTheFood, hasSnakeEatenItself } from "./movement";
 
 export interface Position {
     x: number;
@@ -23,9 +22,11 @@ const MOVEMENT_SPEED = 100;
 interface UseGameLogicArgs {
     canvasWidth?: number;
     cavnasHeight?: number;
+    onGameOver : () => void;
+    gameState : GameState;
 }
 
-const useGameLogic = ({ cavnasHeight, canvasWidth }: UseGameLogicArgs) => {
+const useGameLogic = ({ cavnasHeight, canvasWidth , onGameOver, gameState}: UseGameLogicArgs) => {
     const [direction, setDirection] = useState<Direction | undefined>();
     const [snakeBody, setSnakeBody] = useState<Position[]>([
         {
@@ -33,6 +34,33 @@ const useGameLogic = ({ cavnasHeight, canvasWidth }: UseGameLogicArgs) => {
             y: 0,
         },
     ]);
+
+    const resetGameState = () => {
+
+        setDirection(undefined);
+        setFoodPostion({
+            x: randomPositionOnGrid({
+                gridSize: SEGMENT_SIZE,
+                threshold: canvasWidth!,
+            }),
+            y: randomPositionOnGrid({
+                gridSize: SEGMENT_SIZE,
+                threshold: cavnasHeight!,
+            })
+        });
+        setSnakeBody([
+            {
+                x: randomPositionOnGrid({
+                    gridSize: SEGMENT_SIZE,
+                    threshold: canvasWidth!,
+                }),
+                y: randomPositionOnGrid({
+                    gridSize: SEGMENT_SIZE,
+                    threshold: cavnasHeight!,
+                }),
+            },
+        ]);
+    }
 
     const [foodPosition, setFoodPostion] = useState<Position | undefined>();
 
@@ -136,6 +164,14 @@ const useGameLogic = ({ cavnasHeight, canvasWidth }: UseGameLogicArgs) => {
                 }
                 break;
         }
+
+    // snake eat itself (die)
+    if(snakeBodyAfterMovement){
+        const isGameOver = hasSnakeEatenItself(snakeBodyAfterMovement);
+        if(isGameOver){
+          onGameOver();
+        }
+    }    
         if(
             direction !== undefined 
             && foodPosition && 
@@ -166,6 +202,7 @@ const useGameLogic = ({ cavnasHeight, canvasWidth }: UseGameLogicArgs) => {
         snakeBody,
         onkeyDownHandler,
         foodPosition,
+        resetGameState
     };
 };
 
