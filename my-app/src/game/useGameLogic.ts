@@ -1,9 +1,10 @@
+import { dir } from "console";
 import { Dir } from "fs";
 import React, { useEffect, useState } from "react"
 import { SEGMENT_SIZE } from "../draw/draw";
 import randomPositionOnGrid from "../utils/randomPositionOnGrid";
 import useInterval from "../utils/useInterval";
-import createSnakeMovement from "./movement";
+import createSnakeMovement, { willSnakeHitTheFood } from "./movement";
 
 export interface Position {
     x: number;
@@ -135,11 +136,29 @@ const useGameLogic = ({ cavnasHeight, canvasWidth }: UseGameLogicArgs) => {
                 }
                 break;
         }
-        if (snakeBodyAfterMovement) {
+        if(
+            direction !== undefined 
+            && foodPosition && 
+            willSnakeHitTheFood({
+            foodPosition,
+            snakeHeadPosition,
+            direction,
+        })
+        ) 
+        {
+            setSnakeBody([
+                ...snakeBodyAfterMovement!,
+                {x:foodPosition.x, y: foodPosition.y}
+            ]);
+            setFoodPostion({
+                x: randomPositionOnGrid({threshold: canvasWidth!}),
+                y: randomPositionOnGrid({threshold: cavnasHeight!})
+            })
+
+        }else if (snakeBodyAfterMovement) {
             setSnakeBody(snakeBodyAfterMovement);
         }
-    };
-
+    }
 
     useInterval(moveSnake, MOVEMENT_SPEED);
 
