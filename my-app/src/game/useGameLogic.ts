@@ -202,7 +202,7 @@ const useGameLogic = ({ cavnasHeight, canvasWidth , onGameOver, gameState}: UseG
         snakeBody,
         onkeyDownHandler,
         foodPosition,
-        resetGameState
+        resetGameState,
     };
 };
 

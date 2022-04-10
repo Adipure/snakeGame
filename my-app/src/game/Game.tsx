@@ -22,6 +22,7 @@ const Game: React.FC<GameProps> = ({}) => {
         canvasWidth : canvasRef.current?.width,
         onGameOver,
         gameState,
+
     });
 
     const drawGame = (context: CanvasRenderingContext2D) => {
