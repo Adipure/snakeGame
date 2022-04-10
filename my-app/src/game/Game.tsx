@@ -9,6 +9,7 @@ interface GameProps {}
 export enum GameState {
     RUNNING,
     GAME_OVER,
+    PAUSED,
 }
 
 const Game: React.FC<GameProps> = ({}) => {
@@ -41,7 +42,9 @@ const Game: React.FC<GameProps> = ({}) => {
         >
             Play Again
         </button>
-        ) : (<button>Pause</button>
+        ) : (<button onClick={()=> {
+            setGameState(gameState === GameState.RUNNING ? GameState.PAUSED : GameState.RUNNING)
+        }}>{gameState === GameState.RUNNING ? 'Pause' : 'Play'}</button>
         )} 
     </GameWrapper>
     );

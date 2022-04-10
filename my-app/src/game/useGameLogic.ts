@@ -196,7 +196,7 @@ const useGameLogic = ({ cavnasHeight, canvasWidth , onGameOver, gameState}: UseG
         }
     }
 
-    useInterval(moveSnake, MOVEMENT_SPEED);
+    useInterval(moveSnake, gameState === GameState.RUNNING ? MOVEMENT_SPEED : null);
 
     return {
         snakeBody,
