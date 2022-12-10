@@ -1,1 +1,0 @@
-# ReactJS TypeScript Snake Game
